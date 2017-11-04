@@ -10,7 +10,7 @@ import AddParameter from './AddParameter'
 import ParameterModel from '../models/Parameter'
 import Law from '../models/Law'
 
-import { getParameters, createParameter } from '../utils/api/parameters'
+import { getParameters, createParameter, deleteParameter } from '../utils/api/parameters'
 import { getLaws } from '../utils/api/laws'
 
 
@@ -41,7 +41,11 @@ export default class ParametersList extends React.Component<{}, LocalState> {
                         <CardTitle title={'Активные сигналы'} />
                     </Card>
                     {parameters.map((parameter: ParameterModel, i: number) =>
-                        <Parameter key={i} parameter={parameter} />
+                        <Parameter
+                            key={i}
+                            parameter={parameter}
+                            deleteParameterCallback={this.removeParameter}
+                        />
                     )}
                 </div>
                 <div className={s.aside}>
@@ -51,10 +55,23 @@ export default class ParametersList extends React.Component<{}, LocalState> {
         )
     }
 
-    addParameter(parameter: ParameterModel) {
-        createParameter(parameter).then((_: any) =>
-            this.setState({parameters: [parameter, ...this.state.parameters]})
-        )
+    addParameter = (parameter: ParameterModel) => {
+        const { parameters } = this.state
+
+        createParameter(parameter).then((data: ParameterModel) => {
+            parameters.unshift(data)
+            this.setState({parameters})
+        })
+    }
+
+    removeParameter = (parameter: ParameterModel) => {
+        const { parameters } = this.state
+
+        deleteParameter(parameter).then((_: any) => {
+            this.setState({
+                parameters: parameters.filter((p: ParameterModel) => p.id !== parameter.id)
+            })
+        })
     }
 }
 

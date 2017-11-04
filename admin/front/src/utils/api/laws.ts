@@ -8,8 +8,4 @@ import Law from '../../models/Law'
 export const getLaws = () =>
     axios
         .get(`http://${HOST}:${PORT}/laws`)
-        .then(data => data.data.map((item: any) => ({
-            id: parseInt(item.id, 10),
-            name: item.name,
-            title: item.title,
-        } as Law)))
+        .then(data => data.data.map((item: any) => new Law(item)))
