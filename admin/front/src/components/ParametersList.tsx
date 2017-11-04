@@ -27,7 +27,7 @@ export default class ParametersList extends React.Component<{}, LocalState> {
     } as LocalState
 
     componentWillMount() {
-        getParameters().then(data => console.log(data))
+        getParameters().then(parameters => this.setState({parameters}))
         getLaws().then(laws => this.setState({laws}))
     }
 
@@ -52,7 +52,9 @@ export default class ParametersList extends React.Component<{}, LocalState> {
     }
 
     addParameter(parameter: ParameterModel) {
-        createParameter(parameter).then((data: any) => console.log(data))
+        createParameter(parameter).then((_: any) =>
+            this.setState({parameters: [parameter, ...this.state.parameters]})
+        )
     }
 }
 

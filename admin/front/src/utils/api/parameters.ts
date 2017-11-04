@@ -28,4 +28,4 @@ export const getParameters = () =>
 export const createParameter = (parameter: Parameter) =>
         axios
             .post(`http://${HOST}:${PORT}/parameters`, parameter)
-            .then(data => true)
+            .then(data => data.data)
