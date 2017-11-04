@@ -1,9 +1,9 @@
 #include "myserver.h"
 
-MyServer::MyServer(QObject *parent):status(false)
+MyServer::MyServer(QObject*):status(false)
 {
     server = new QTcpServer();
-    connect(server, SIGNAL(newConnection()), this, SLOT(newClient()));
+    connect(server, SIGNAL(newConnection()), this, SLOT(newConnection()));
     if (!server->listen(QHostAddress::Any, 8080) && !status) {
         qDebug() <<  QObject::tr("Unable to start the server: %1.").arg(server->errorString());
     } else {
@@ -12,8 +12,14 @@ MyServer::MyServer(QObject *parent):status(false)
     }
 }
 
-void MyServer::newClient()
+void MyServer::newConnection()
 {
+    while (server->hasPendingConnections()) {
+        QHttpConnection *connection =
+                new QHttpConnection(m_tcpServer->nextPendingConnection(), this);
+        connect(connection, SIGNAL(newRequest(QHttpRequest *, QHttpResponse *)), this,
+                SIGNAL(newRequest(QHttpRequest *, QHttpResponse *)));
+    }
     if(status){
         qDebug()<<"new connection";
         QTcpSocket* clientSocket=server->nextPendingConnection();
