@@ -25,7 +25,7 @@ app.use(function (req, res, next) {
 app.use(bodyParser.json());
 
 app.get('/parameters', function (req, res) {
-    data.getData().then(function(result) {
+    data.getAllData().then(function(result) {
         res.json(result);
     });
 });

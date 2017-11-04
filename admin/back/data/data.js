@@ -15,9 +15,9 @@ Data.prototype.query = function(sql, parameters) {
     });
 };
 
-Data.prototype.getData = function(region, industryId) {
+Data.prototype.getAllData = function() {
     var sql =
-        "SELECT parameters.id, parameters.name, period, min, max, mean, unit, noise, law_id, laws.name as law_name, title " +
+        "SELECT parameters.id, parameters.name, period, min, max, mean, unit, noise, dispersion, law_id, laws.name as law_name, title " +
         "FROM parameters, laws WHERE law_id = laws.id";
 
     return this.query(sql).then(function(results) {
@@ -29,6 +29,7 @@ Data.prototype.getData = function(region, industryId) {
                 min: row['min'],
                 max: row['max'],
                 mean: row['mean'],
+                dispersion: row['dispersion'],
                 unit: row['unit'],
                 noise: row['noise'],
                 law: {
@@ -41,21 +42,53 @@ Data.prototype.getData = function(region, industryId) {
     });
 };
 
+Data.prototype.getData = function(id) {
+    var sql =
+        "SELECT parameters.id, parameters.name, period, min, max, mean, unit, noise, dispersion, law_id, laws.name as law_name, title " +
+        "FROM parameters, laws WHERE law_id = laws.id AND id = ?";
+
+    return this.query(sql, [id]).then(function(results) {
+        return results.map(function(row) {
+            return {
+                id: row["id"],
+                name: row['name'],
+                period: row['period'],
+                min: row['min'],
+                max: row['max'],
+                mean: row['mean'],
+                dispersion: row['dispersion'],
+                unit: row['unit'],
+                noise: row['noise'],
+                law: {
+                    id: row['law_id'],
+                    name: row['law_name'],
+                    title: row['title']
+                }
+            }
+        })[0];
+    });
+};
+
 Data.prototype.addData = function (params) {
     var sql =
         "INSERT INTO parameters SET ?";
 
-    return this.query(sql, params).then(function(results) {
-        return Object.assign({id: results.insertId}, params)
-    });
+    var self = this;
+
+    return this.query(sql, params)
+        .then(function(results) {
+            return self.getData(results.insertId);
+         });
 };
 
 Data.prototype.changeData = function (id, params) {
     var sql =
         "UPDATE parameters SET ? WHERE id = ?";
 
+    var self = this;
+
     return this.query(sql, [params, id]).then(function(results) {
-        return Object.assign({id: id}, params)
+        return self.getData(id);
     });
 };
 
