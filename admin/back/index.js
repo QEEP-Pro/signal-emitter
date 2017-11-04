@@ -12,6 +12,8 @@ const app = express();
 
 app.use(function (req, res, next) {
     res.append('Access-Control-Allow-Origin', '*');
+    res.append('Access-Control-Allow-Headers', '*');
+    res.append('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
     next();
 });
 
@@ -24,7 +26,10 @@ app.get('/parameters', function (req, res) {
 });
 
 app.post('/parameters', function (req, res) {
-    data.addData(req.body).then(function(result) {
+    const parameter = Object.assign({law_id: req.body.law.id}, req.body)
+    delete parameter['law']
+
+    data.addData(parameter).then(function(result) {
         res.json(result);
     });
 });
