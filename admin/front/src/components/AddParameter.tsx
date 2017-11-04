@@ -11,21 +11,24 @@ import Checkbox from 'material-ui/Checkbox'
 import FlatButton from 'material-ui/FlatButton'
 
 import Law from '../models/Law'
+import Parameter from '../models/Parameter'
 
 
 interface Props {
     laws: Law[]
+
+    createParameterCallback: (parameter: Parameter) => void
 }
 
 interface LocalState {
     law?: Law
     name?: string
     unit?: string
-    min?: number
-    max?: number
-    mean?: number
-    dispersion?: number
-    period?: number
+    min: number
+    max: number
+    mean: number
+    dispersion: number
+    period: number
     noise: boolean
 }
 
@@ -35,20 +38,17 @@ export default class AddParameter extends React.Component<Props, LocalState> {
         law: undefined,
         name: undefined,
         unit: undefined,
-        min: undefined,
-        max: undefined,
-        mean: undefined,
-        dispersion: undefined,
-        period: undefined,
-        
+        min: 0,
+        max: 10,
+        mean: 5,
+        dispersion: 12,
+        period: 10,
         noise: true,
     } as LocalState
 
     render() {
         const { laws } = this.props
         const { law, name, unit, min, max, mean, dispersion, period, noise } = this.state
-
-        console.log(this.state)
 
         return(
             <Card>
@@ -74,7 +74,7 @@ export default class AddParameter extends React.Component<Props, LocalState> {
                     <div className={s.row}>
                         <NumberInput
                             fullWidth
-                            value={min ? min.toString() : undefined}
+                            value={min.toString()}
                             onChange={this.handleChangeMin}
                             strategy={'warn'}
 
@@ -82,7 +82,7 @@ export default class AddParameter extends React.Component<Props, LocalState> {
                         />
                         <NumberInput
                             fullWidth
-                            value={max ? max.toString() : undefined}
+                            value={max.toString()}
                             onChange={this.handleChangeMax}
                             strategy={'warn'}
 
@@ -92,7 +92,7 @@ export default class AddParameter extends React.Component<Props, LocalState> {
 
                     <NumberInput
                         fullWidth
-                        value={mean ? mean.toString() : undefined}
+                        value={mean.toString()}
                         onChange={this.handleChangeMean}
                         strategy={'warn'}
 
@@ -101,7 +101,7 @@ export default class AddParameter extends React.Component<Props, LocalState> {
 
                     <NumberInput
                         fullWidth
-                        value={dispersion ? dispersion.toString() : undefined}
+                        value={dispersion.toString()}
                         onChange={this.handleChangeDispersion}
                         strategy={'warn'}
 
@@ -130,7 +130,7 @@ export default class AddParameter extends React.Component<Props, LocalState> {
 
                     <NumberInput
                         fullWidth
-                        value={period ? period.toString() : undefined}
+                        value={period.toString()}
                         onChange={this.handleChangePeriod}
                         strategy={'warn'}
 
@@ -140,7 +140,7 @@ export default class AddParameter extends React.Component<Props, LocalState> {
                 </CardText>
                 
                 <CardActions>
-                    <FlatButton label={'Сохранить'} fullWidth />
+                    <FlatButton label={'Сохранить'} fullWidth onClick={this.handleClickCreate} />
                 </CardActions>
             </Card>
         )
@@ -151,15 +151,28 @@ export default class AddParameter extends React.Component<Props, LocalState> {
     handleChangeName = (_: any, name: string) => this.setState({name})
     handleChangeUnit = (_: any, unit: string) => this.setState({unit})
 
-    handleChangeMin = (_: any, min: string) => this.setState({min: parseFloat(min)})
-    handleChangeMax = (_: any, max: string) => this.setState({max: parseFloat(max)})
+    handleChangeMin = (_: any, min: string) => this.setState({min: parseFloat(min) || 0})
+    handleChangeMax = (_: any, max: string) => this.setState({max: parseFloat(max) || 0})
 
-    handleChangeMean = (_: any, mean: string) => this.setState({mean: parseFloat(mean)})
-    handleChangeDispersion = (_: any, dispersion: string) => this.setState({dispersion: parseFloat(dispersion)})
+    handleChangeMean = (_: any, mean: string) => this.setState({mean: parseFloat(mean) || 0})
+    handleChangeDispersion = (_: any, dispersion: string) => this.setState({dispersion: parseFloat(dispersion) || 0})
 
-    handleChangePeriod = (_: any, period: string) => this.setState({period: parseFloat(period)})
+    handleChangePeriod = (_: any, period: string) => this.setState({period: parseFloat(period) || 0})
 
     handleChangeNoise = (_: any, noise: boolean) => this.setState({noise})
+
+    handleClickCreate = (_1: any) => {
+        if (this.validateData(this.state)) {
+            console.log('ok')
+        } else {
+            console.log('erro')
+        }
+        // this.props.createParameterCallback({...this.state} as Parameter)
+    }
+
+    validateData = (data: LocalState) =>
+        !!data.law && !!data.name && !!data.period
+            && (data.min < data.max) && (data.period > 0)
 }
 
 const s = {
