@@ -12,6 +12,9 @@ const app = express();
 
 app.use(function (req, res, next) {
     res.append('Access-Control-Allow-Origin', '*');
+    res.append('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.append('Access-Control-Allow-Methods', '*');
+    res.append('Access-Control-Request-Headers', '*');
     next();
 });
 
@@ -24,7 +27,10 @@ app.get('/parameters', function (req, res) {
 });
 
 app.post('/parameters', function (req, res) {
-    data.addData(req.body).then(function(result) {
+    const parameter = Object.assign({law_id: req.body.law.id}, req.body)
+    delete parameter['law']
+
+    data.addData(parameter).then(function(result) {
         res.json(result);
     });
 });

@@ -17,8 +17,16 @@ export const getParameters = () =>
             max: parseFloat(item.max),
             unit: item.unit,
             noise: item.noise,
+            mean: parseFloat(item.mean),
+            dispersion: parseFloat(item.dispersion),
             law: {
                 id: parseInt(item.law.id, 10),
                 name: item.law.name,
+                title: item.law.title,
             } as Law,
         } as Parameter)))
+
+export const createParameter = (parameter: Parameter) =>
+        axios
+            .post(`http://${HOST}:${PORT}/parameters`, parameter)
+            .then(data => data.data)
