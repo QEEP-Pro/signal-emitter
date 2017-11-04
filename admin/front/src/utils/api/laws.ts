@@ -11,4 +11,5 @@ export const getLaws = () =>
         .then(data => data.data.map((item: any) => ({
             id: parseInt(item.id, 10),
             name: item.name,
+            title: item.title,
         } as Law)))
