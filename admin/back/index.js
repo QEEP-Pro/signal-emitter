@@ -37,13 +37,13 @@ app.post('/parameters', function (req, res) {
 });
 
 app.put('/parameters', function (req, res) {
-    data.changeData(req.query.uid, req.body).then(function(result) {
+    data.changeData(req.body.id, req.body).then(function(result) {
         res.json(result);
     });
 });
 
 app.delete('/parameters', function (req, res) {
-    data.deleteData(req.query.uid).then(function(result) {
+    data.deleteData(req.query.id).then(function(result) {
         res.end();
     });
 });

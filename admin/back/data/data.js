@@ -17,12 +17,13 @@ Data.prototype.query = function(sql, parameters) {
 
 Data.prototype.getData = function(region, industryId) {
     var sql =
-        "SELECT parameters.name, period, min, max, mean, unit, noise, law_id, laws.name as law_name " +
+        "SELECT parameters.id, parameters.name, period, min, max, mean, unit, noise, law_id, laws.name as law_name, title " +
         "FROM parameters, laws WHERE law_id = laws.id";
 
     return this.query(sql).then(function(results) {
         return results.map(function(row) {
             return {
+                id: row["id"],
                 name: row['name'],
                 period: row['period'],
                 min: row['min'],
@@ -32,7 +33,8 @@ Data.prototype.getData = function(region, industryId) {
                 noise: row['noise'],
                 law: {
                     id: row['law_id'],
-                    name: row['law_name']
+                    name: row['law_name'],
+                    title: row['title']
                 }
             }
         });
@@ -66,13 +68,14 @@ Data.prototype.deleteData = function (id) {
 
 Data.prototype.getLaws = function() {
     var sql =
-        "SELECT id, name FROM laws";
+        "SELECT id, name, title FROM laws";
 
     return this.query(sql).then(function(results) {
         return results.map(function(row) {
             return {
                 id: row['id'],
-                name: row['name']
+                name: row['name'],
+                title: row['title']
             }
         });
     });
