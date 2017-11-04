@@ -58,6 +58,7 @@ export default class AddParameter extends React.Component<Props, LocalState> {
                     <TextField
                         fullWidth
                         value={name}
+                        required
                         onChange={this.handleChangeName}
 
                         floatingLabelText={'Название'}
@@ -66,6 +67,7 @@ export default class AddParameter extends React.Component<Props, LocalState> {
                     <TextField
                         fullWidth
                         value={unit}
+                        required
                         onChange={this.handleChangeUnit}
 
                         floatingLabelText={'Единица измерения'}
@@ -163,11 +165,11 @@ export default class AddParameter extends React.Component<Props, LocalState> {
 
     handleClickCreate = (_1: any) => {
         if (this.validateData(this.state)) {
-            console.log('ok')
+            this.props.createParameterCallback({...this.state} as Parameter)
         } else {
             console.log('erro')
         }
-        // this.props.createParameterCallback({...this.state} as Parameter)
+        
     }
 
     validateData = (data: LocalState) =>
