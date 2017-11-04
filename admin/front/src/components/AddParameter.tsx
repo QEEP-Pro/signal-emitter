@@ -92,23 +92,24 @@ export default class AddParameter extends React.Component<Props, LocalState> {
                         />
                     </div>
 
-                    <NumberInput
-                        fullWidth
-                        value={mean.toString()}
-                        onChange={this.handleChangeMean}
-                        strategy={'warn'}
+                    <div className={s.row}>
+                        <NumberInput
+                            fullWidth
+                            value={mean.toString()}
+                            onChange={this.handleChangeMean}
+                            strategy={'warn'}
 
-                        floatingLabelText={'Математическое ожидание'}
-                    />
+                            floatingLabelText={'Математическое ожидание'}
+                        />
+                        <NumberInput
+                            fullWidth
+                            value={dispersion.toString()}
+                            onChange={this.handleChangeDispersion}
+                            strategy={'warn'}
 
-                    <NumberInput
-                        fullWidth
-                        value={dispersion.toString()}
-                        onChange={this.handleChangeDispersion}
-                        strategy={'warn'}
-
-                        floatingLabelText={'Дисперсия'}
-                    />
+                            floatingLabelText={'Дисперсия'}
+                        />
+                    </div>
     
                     <SelectField
                         fullWidth

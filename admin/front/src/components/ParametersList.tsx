@@ -68,10 +68,10 @@ const s = {
     `,
 
     main: css`
-        width: calc(70% - 1rem);
+        width: calc(60% - 1rem);
     `,
 
     aside: css`
-        width: calc(30% - 1rem);
+        width: calc(40% - 1rem);
     `,
 }

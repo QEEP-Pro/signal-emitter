@@ -22,6 +22,7 @@ export const getParameters = () =>
             law: {
                 id: parseInt(item.law.id, 10),
                 name: item.law.name,
+                title: item.law.title,
             } as Law,
         } as Parameter)))
 
