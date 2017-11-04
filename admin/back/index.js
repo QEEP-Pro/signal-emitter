@@ -1,21 +1,14 @@
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
-
+const config = require('./config');
 const Data = require('./data/data.js');
 
-const data = new Data({
-    host     : 'localhost',
-    user     : 'admin',
-    password : 'admin', 
-    database : 'digital-hack'
-});
+const data = new Data(config.db);
 
-const emulatorPath = 'http://localhost/';
+const emulatorPath = config.emulatorPath;
 
 const app = express();
-
-const port = 3002;
 
 app.use(function (req, res, next) {
     res.append('Access-Control-Allow-Origin', '*');
@@ -60,6 +53,6 @@ app.get('/refreshData', function (req, res) {
     });
 });
 
-app.listen(port, function () {
-    console.log("Running on port: " + port)
+app.listen(config.port, function () {
+    console.log("Running on port: " + config.port)
 });
