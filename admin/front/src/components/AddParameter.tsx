@@ -167,6 +167,7 @@ export default class AddParameter extends React.Component<Props, LocalState> {
     handleClickCreate = (_1: any) => {
         if (this.validateData(this.state)) {
             this.props.createParameterCallback({...this.state} as Parameter)
+            
         } else {
             console.log('erro')
         }
