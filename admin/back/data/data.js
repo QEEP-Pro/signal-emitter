@@ -45,7 +45,7 @@ Data.prototype.getAllData = function() {
 Data.prototype.getData = function(id) {
     var sql =
         "SELECT parameters.id, parameters.name, period, min, max, mean, unit, noise, dispersion, law_id, laws.name as law_name, title " +
-        "FROM parameters, laws WHERE law_id = laws.id AND id = ?";
+        "FROM parameters, laws WHERE law_id = laws.id AND parameters.id = ?";
 
     return this.query(sql, [id]).then(function(results) {
         return results.map(function(row) {
