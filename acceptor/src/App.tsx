@@ -1,11 +1,17 @@
 import * as React from 'react'
 
+import AppBar from 'material-ui/AppBar'
+
+import Acceptor from './components/Acceptor'
+
+
 export default class App extends React.Component {
     render() {
-        return (
-            <div>
-              <p>To get started, edit <code>src/App.tsx</code> and save to reload.</p>
-            </div>
-        )
+      return (
+          <div>
+              <AppBar title={'Acceptor'} showMenuIconButton={false} />
+              <Acceptor />
+          </div>
+      )
     }
 }

@@ -1,0 +1,89 @@
+import * as React from 'react'
+
+import { css } from 'emotion'
+
+import RaisedButton from 'material-ui/RaisedButton'
+
+import ParametersList from './ParametersList'
+import ParametersView from './ParametersView'
+
+import Parameter from '../model/Parameter'
+
+
+interface LocalState {
+    parameters: Parameter[]
+    activeIds: number[]
+}
+
+export default class Acceptor extends React.Component<{}, LocalState> {
+
+    state = {
+        parameters: [],
+        activeIds: [],
+    } as LocalState
+
+    componentWillMount() {
+        this.setState({
+            parameters: [
+                new Parameter({id: 1, name: 'Test One'}),
+                new Parameter({id: 2, name: 'Two Test'})
+            ]
+        })
+    }
+
+    render() {
+        const { parameters, activeIds } = this.state
+
+        return (
+            <div>
+                <div className={s.container}>
+                    <div className={s.aside}>
+                        <ParametersList
+                            parameters={parameters}
+                            activeIds={activeIds} 
+                            handleToggle={this.handleToggleParameter}
+                        />
+                    </div>
+                    <div className={s.main}>
+                        <RaisedButton fullWidth label={'Подписаться'} />
+                        <ParametersView ids={activeIds} />
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    handleToggleParameter = (index: number) => {
+        const { activeIds } = this.state
+
+        const newIds = []
+
+        if (activeIds.indexOf(index) !== -1) {
+            newIds.push(...activeIds.filter((i: number) => i !== index))
+        } else {
+            newIds.push(...activeIds, index)
+        }
+
+        this.setState({
+            activeIds: newIds
+        })
+    }
+}
+
+const s = {
+    container: css`
+        padding: 2rem;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    `,
+
+    aside: css`
+        width: calc(30% - 1rem);
+    `,
+
+    main: css`
+        width: calc(70% - 1rem);
+    `,
+}
