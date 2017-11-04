@@ -12,7 +12,7 @@ const app = express();
 
 app.use(function (req, res, next) {
     res.append('Access-Control-Allow-Origin', '*');
-    res.append('Access-Control-Allow-Headers', '*');
+    res.append('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.append('Access-Control-Allow-Methods', '*');
     res.append('Access-Control-Request-Headers', '*');
     next();
