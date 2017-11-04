@@ -5,9 +5,10 @@ const bodyParser = require('body-parser');
 const Data = require('./data/data.js');
 
 const data = new Data({
-    socketPath: '/var/run/mysqld/mysqld.sock',
-    user     : 'root',
-    database : 'digitalhack'
+    host     : 'localhost',
+    user     : 'admin',
+    password : 'admin', 
+    database : 'digital-hack'
 });
 
 const emulatorPath = 'http://localhost/';

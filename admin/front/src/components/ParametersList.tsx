@@ -28,7 +28,7 @@ export default class ParametersList extends React.Component<{}, LocalState> {
 
     componentWillMount() {
         getParameters().then(data => console.log(data))
-        getLaws().then(data => console.log(data))
+        getLaws().then(laws => this.setState({laws}))
     }
 
     render() {
