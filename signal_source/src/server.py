@@ -2,17 +2,11 @@ import logging
 import json
 import threading
 import random
+import time
+import math
 
 from websocket_server import WebsocketServer
 from models import Parameter
-
-
-def emit(parameters: list, send_message: callable):
-    # каждые parameters.period сукнду
-    # x, y как на доске решили для каждого параметра
-    # вызывает send message
-    pass
-
 
 def do_periodically(interval, worker_func, iterations = 0):
     if iterations != 1:
@@ -23,14 +17,6 @@ def do_periodically(interval, worker_func, iterations = 0):
         ).start()
     worker_func()
 
-
-# MOCK
-parameters = [
-    Parameter(1, 'Nest One', 'hu'),
-    Parameter(2, 'Parameter', 'p'),
-]
-
-
 def get_point(parameter):
     return {
         'id': parameter.id,
@@ -38,19 +24,13 @@ def get_point(parameter):
         'y': random.randint(-20, 1000),
     }
 
-
-clients = {}
-
-
 def new_client(client, _):
     if client['id'] not in clients.keys():
         clients[client['id']] = client
         clients[client['id']]['ids'] = []
 
-
 def left_client(client, _):
     clients.pop(client['id'], None)
-
 
 def message_received(client, _, message):
     if message == 'refresh':
@@ -58,30 +38,45 @@ def message_received(client, _, message):
     else:
         clients[client['id']]['ids'] = json.loads(message)
 
-
-server = WebsocketServer(13254, host='localhost', loglevel=logging.DEBUG)
-
-
 def send_parameters():
     for parameter in parameters:
         for client in clients.values():
             if parameter.id in client['ids']:
                 server.send_message(client, json.dumps(get_point(parameter)))
 
-
-def send_message(id: int, x: float, y: float):
+def send_message(id: int, x: float, y: float) -> None:
     for client in clients.values():
-        if parameter.id in client['ids']:
+        if id in client['ids']:
             server.send_message(client, json.dumps({
                 "id": id,
                 "x": x,
                 "y": y,
             }))
 
+def send_message_wrapper(id: int, law: str) -> None:
+    x = time.time() - time_stamp_zero
+    y = {'sin': lambda x: math.sin(x),
+        'cos': lambda x: math.cos(x),
+        'ln': lambda x: math.log(x)}[law](x)
+    send_message(id, x, y)
+
+def emit(parameters: list) -> None:    
+    for parameter in parameters:
+        threading.Timer(parameter.period, send_message_wrapper(parameter.id, parameter.law)).start()
+
+time_stamp_zero: time = time.time()
+
+# MOCK
+parameters = [
+    Parameter(1, 'Nest One', 'hu'),
+    Parameter(2, 'Parameter', 'p'),
+]
+
+clients = {}
+
+server = WebsocketServer(13254, host='localhost', loglevel=logging.DEBUG)
 
 do_periodically(1, send_parameters, 100000)
-
-
 server.set_fn_new_client(new_client)
 server.set_fn_client_left(left_client)
 server.set_fn_message_received(message_received)
