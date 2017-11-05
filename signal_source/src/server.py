@@ -9,9 +9,9 @@ import pymysql.cursors
 from websocket_server import WebsocketServer
 from models import Parameter
 
-noise_delta=0.1
 
-def noiseit(num):
+def noiseit(num, parameter):
+    noise_delta=math.sqrt(parameter.dispersion)/parameter.mean
     return random.uniform(num*(1-noise_delta), num*(1+noise_delta))
 
 
