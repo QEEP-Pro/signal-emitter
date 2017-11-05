@@ -26,8 +26,8 @@ def do_periodically(interval, worker_func, iterations = 0):
 
 # MOCK
 parameters = [
-    Parameter(1, 'Nest One', 'hu'),
-    Parameter(2, 'Parameter', 'p'),
+#    Parameter(1, 'Nest One', 'hu'),
+#    Parameter(2, 'Parameter', 'p'),
 ]
 
 
@@ -58,7 +58,22 @@ def message_received(client, _, message):
     else:
         clients[client['id']]['ids'] = json.loads(message)
 
+def read_db():
+    global parameters
+    conn_db = pymysql.connect(host='localhost',user='admin',password='admin',db='digital-hack',charset='utf8',cursorclass=pymysql.cursors.DictCursor)
+    try:
+        with conn_db.cursor() as cursor:
+            cursor.execute("SELECT * FROM `parameters`")
+            parameters = cursor.fetchall()
+	    cursor.execute("SELECT * FROM `laws`")
+            laws = cursor.fetchall()
+	for row in parameters:
+            law_name = next(x for x in laws if x['id']==row['law_id'])
+            parameters.append(Parameter(row['id'], row['name'], row['unit'], law_name, row['period'], row['noise']))
+    finally:
+        conn_db.close()
 
+read_db()
 server = WebsocketServer(13254, host='localhost', loglevel=logging.DEBUG)
 
 
