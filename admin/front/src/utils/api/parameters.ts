@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { HOST, PORT } from './settings'
+import { HOST, PORT, WS_HOST, WS_PORT } from './settings'
 
 import Parameter from '../../models/Parameter'
 
@@ -19,3 +19,11 @@ export const deleteParameter = (parameter: Parameter) =>
     axios
         .get(`http://${HOST}:${PORT}/parameters?id=${parameter.id}`)
         .then(data => true)
+
+export const refreshParameters = () => {
+    const socket = new WebSocket(`ws://${WS_HOST}:${WS_PORT}`)
+    socket.onopen = () => {
+        socket.send('refresh')
+        socket.close()
+    }
+}

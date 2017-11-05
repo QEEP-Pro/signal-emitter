@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import { Card, CardTitle } from 'material-ui/Card'
+import FlatButton from 'material-ui/FlatButton'
 
 import { css } from 'emotion'
 
@@ -10,7 +11,7 @@ import AddParameter from './AddParameter'
 import ParameterModel from '../models/Parameter'
 import Law from '../models/Law'
 
-import { getParameters, createParameter, deleteParameter } from '../utils/api/parameters'
+import { getParameters, createParameter, deleteParameter, refreshParameters } from '../utils/api/parameters'
 import { getLaws } from '../utils/api/laws'
 
 
@@ -49,6 +50,11 @@ export default class ParametersList extends React.Component<{}, LocalState> {
                     )}
                 </div>
                 <div className={s.aside}>
+                    <FlatButton
+                        fullWidth
+                        label={'Обновить параметры эмиттера'}
+                        onClick={() => refreshParameters()}
+                    />
                     <AddParameter laws={laws} createParameterCallback={this.addParameter} />
                 </div>
             </div>
