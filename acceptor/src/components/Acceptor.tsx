@@ -40,7 +40,7 @@ export default class Acceptor extends React.Component<{}, LocalState> {
                         />
                     </div>
                     <div className={s.main}>
-                        <ParametersView ids={activeIds} getParameterCallback={this.getParameterById} />
+                        {<ParametersView ids={activeIds} getParameterCallback={this.getParameterById} />}
                     </div>
                 </div>
             </div>

@@ -77,8 +77,6 @@ export default class ParametersView extends React.Component<Props, LocalState> {
         const { ids, getParameterCallback } = this.props
         const { points, active } = this.state
 
-        console.log(points)
-
         return(
             <div>
                 <Card>
