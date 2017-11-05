@@ -1,0 +1,8 @@
+db:
+    host: 'localhost'
+    user: 'root'
+    password: 'pasS0511'
+    db_name: 'digital-hack'
+ws:
+    host: 'localhost'
+    port: 13254

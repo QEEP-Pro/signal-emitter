@@ -5,10 +5,12 @@ import random
 import time
 import math
 import pymysql.cursors
-
+import yaml
 from websocket_server import WebsocketServer
 from models import Parameter
 
+
+conf = yaml.load(open("../../conf/conf.yml").read())
 
 def noiseit(num, parameter):
     noise_delta=math.sqrt(parameter.dispersion)/parameter.mean
@@ -79,7 +81,7 @@ def get_point(parameter):
 
 def read_db():
     parameters = []
-    conn_db = pymysql.connect(host='localhost',user='admin',password='admin',db='digital-hack',charset='utf8',cursorclass=pymysql.cursors.DictCursor)
+    conn_db = pymysql.connect(host=conf['db']['host'],user=conf['db']['user'],password=conf['db']['password'],db=conf['db']['db_name'],charset='utf8',cursorclass=pymysql.cursors.DictCursor)
     try:
         with conn_db.cursor() as cursor:
             cursor.execute("SELECT * FROM `parameters`")
@@ -108,11 +110,9 @@ time_stamp_zero = time.time()
 # MOCK
 parameters = read_db()
 
-# read_db()
-
 clients = {}
 
-server = WebsocketServer(13254, host='localhost', loglevel=logging.DEBUG)
+server = WebsocketServer(conf['ws']['port'], conf['ws']['host'], loglevel=logging.DEBUG)
 
 do_periodically(1, send_parameters)
 
