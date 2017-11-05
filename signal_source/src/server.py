@@ -78,10 +78,8 @@ def send_message(id: int, x: float, y: float):
                 }))
 
 
-
 do_periodically(1, send_parameters, 100000)
 
-f(parameter, send_func, clints_dist, server)
 
 server.set_fn_new_client(new_client)
 server.set_fn_client_left(left_client)
