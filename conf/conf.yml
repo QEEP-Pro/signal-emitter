@@ -1,7 +1,7 @@
 db:
     host: 'localhost'
-    user: 'root'
-    password: 'pasS0511'
+    user: 'admin'
+    password: 'admin'
     db_name: 'digital-hack'
 ws:
     host: 'localhost'

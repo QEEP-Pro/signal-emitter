@@ -9,11 +9,10 @@ import yaml
 from websocket_server import WebsocketServer
 from models import Parameter
 
-
 conf = yaml.load(open("../../conf/conf.yml").read())
 
-def noiseit(num, parameter):
-    noise_delta=math.sqrt(parameter.dispersion)/parameter.mean
+def make_noise(num, parameter):
+    noise_delta = (math.sqrt(parameter.dispersion) / float(parameter.mean)) / 100
     return random.uniform(num*(1-noise_delta), num*(1+noise_delta))
 
 
@@ -45,32 +44,53 @@ def message_received(client, _, message):
 
 
 def get_point(parameter):
+    def normalize(v, max, min):
+        if v < min:
+            v = min
+        elif v > max:
+            v = max
+
+        return v
+
     x = time.time() - time_stamp_zero
 
     law = parameter.law['name']
 
+    max = int(parameter.max)
+    min = int(parameter.min)
+    center = (max - min) / 2
+
     if law == 'sin':
-        y = math.sin(x)
+        y = math.sin(x) * center + center
     elif law == 'linear':
-        y = x * 0.2 + 2
+        y = min + (x * 0.1) if min + (x * 0.1) <= max else max
     elif law == 'saw':
-        y = (x / 11) - int(x / 11)
+        y = ((x / 6) - int(x / 6)) * center + center
     elif law == 'ln':
         y = math.log(x)
+        y = normalize(y, max, min)
     elif law == 'ln-1':
         y = math.log(x) ** (-1)
+        y = normalize(y, max, min)
 
     elif law == 'ln-1*sin':
         y = math.sin(x) * (math.log(x) ** (-1))
+        y = normalize(y, max, min)
     elif law == 'ln*sin':
         y = math.sin(x) * math.log(x)
+        y = normalize(y, max, min)
     elif law == 'linear-1*sin':
         y = math.sin(x) * (x ** (-1))
+        y = normalize(y, max, min)
     elif law == 'linear*sin':
         y = math.sin(x) * x
+        y = normalize(y, max, min)
 
     else:
-        y = x
+        y = min + x if min + x <= max else max
+
+    if parameter.noise:
+        y = make_noise(y, parameter)
 
     return {
         'id': parameter.id,
