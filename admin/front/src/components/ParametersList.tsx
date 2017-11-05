@@ -51,12 +51,13 @@ export default class ParametersList extends React.Component<{}, LocalState> {
                 </div>
                 <div className={s.aside}>
                     <FlatButton
-                        className={css`margin-bottom: 2rem;`}
                         fullWidth
                         label={'Обновить параметры эмиттера'}
                         onClick={() => refreshParameters()}
                     />
-                    <AddParameter laws={laws} createParameterCallback={this.addParameter} />
+                    <div className={css`margin-top: 2rem;`}>
+                        <AddParameter laws={laws} createParameterCallback={this.addParameter} />
+                    </div>
                 </div>
             </div>
         )
