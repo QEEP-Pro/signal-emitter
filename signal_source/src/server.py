@@ -65,7 +65,7 @@ def read_db():
             laws = cursor.fetchall()
         for row in rows:
             law_name = next(x for x in laws if x['id']==row['law_id'])
-            parameters.append(Parameter(row['id'], row['name'], row['unit'], law_name, row['period'], row['noise'],row['mean'],row['dispersion']))
+            parameters.append(Parameter(row['id'], row['name'], row['unit'], law_name, row['period'], row['noise'],row['mean'],row['dispersion'],row['min'],row['max']))
     finally:
         conn_db.close()
 

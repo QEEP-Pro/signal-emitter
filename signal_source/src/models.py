@@ -1,5 +1,5 @@
 class Parameter:
-    def __init__(self, id: int, name: str, unit: str = '', law: str = 'sin', period: int = 1, noise: bool = False, mean: float = 1, dispersion: float = 0):
+    def __init__(self, id: int, name: str, unit: str = '', law: str = 'sin', period: int = 1, noise: bool = False, mean: float = 1, dispersion: float = 0, min: float=0.0, max: float=1.0):
         self.id = id
         self.name = name
         self.unit = unit
@@ -8,4 +8,6 @@ class Parameter:
         self.noise = noise
         self.mean = mean
         self.dispersion = dispersion
+        self.min = min
+        self.max = max
 
