@@ -7,7 +7,6 @@
         <script>
             var ws = new WebSocket("ws://127.0.0.1:8004/api/parametersList"),
                 messages = document.createElement('ul');
-            ws.send('[1,2,3]');
             ws.onmessage = function (event) {
                 var messages = document.getElementsByTagName('ul')[0],
                     message = document.createElement('li'),
@@ -16,6 +15,7 @@
                 messages.appendChild(message);
             };
             document.body.appendChild(messages);
+            ws.send('[1,2,3]');
         </script>
     </body>
 </html>
