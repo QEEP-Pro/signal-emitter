@@ -6,11 +6,11 @@ import { Card, CardTitle } from 'material-ui/Card'
 
 import Chart from './Chart'
 
+import { WS_HOST, WS_PORT } from '../api/settings'
+
 import Parameter from '../model/Parameter'
 import Point from '../model/Point'
 
-
-const MAX_POINTS = 25
 
 interface Props {
     ids: number[]
@@ -40,11 +40,10 @@ export default class ParametersView extends React.Component<Props, LocalState> {
     componentWillReceiveProps(nextProps: Props) {
         let socket = this.socket
 
-        const { ids } = this.props
         const { points } = this.state
 
         if (!socket) {
-            socket = new WebSocket('ws://localhost:13254')
+            socket = new WebSocket(`ws://${WS_HOST}:${WS_PORT}`)
 
             socket.onopen = () => {
                 console.log('Socket Open')
@@ -54,17 +53,14 @@ export default class ParametersView extends React.Component<Props, LocalState> {
                 console.log('Socket Close')
                 this.setState({active: false})
             }
-    
-            socket.onmessage = (message) => {
-                if (points.length * ids.length > MAX_POINTS) {
-                    points.shift()
-                }
-                const point = new Point(JSON.parse(message.data))
+        }
 
-                points.push(point)
+        socket.onmessage = (message) => {
+            const point = new Point(JSON.parse(message.data))
 
-                this.setState({points})
-            }
+            points.push(point)
+
+            this.setState({points})
         }
 
         if (socket.readyState) {
@@ -82,7 +78,7 @@ export default class ParametersView extends React.Component<Props, LocalState> {
             <div>
                 <Card>
                     <CardTitle
-                        title={active ? 'Содинение активно' : 'Соединение закрыто'}
+                        title={active ? 'Соединение активно' : 'Соединение закрыто'}
                         subtitle={active ? false : 'Попробуйте перезагрузить страницу'}
                     />
                 </Card>

@@ -54,49 +54,58 @@ def get_point(parameter):
 
     x = time.time() - time_stamp_zero
 
-    law = parameter.law['name']
+    period = int(parameter.period)
 
-    max = int(parameter.max)
-    min = int(parameter.min)
-    center = (max - min) / 2
+    if int(x) % period == 0 or period == 1:
+        law = parameter.law['name']
 
-    if law == 'sin':
-        y = math.sin(x) * center + center
-    elif law == 'linear':
-        y = min + (x * 0.1) if min + (x * 0.1) <= max else max
-    elif law == 'saw':
-        y = ((x / 6) - int(x / 6)) * center + center
-    elif law == 'ln':
-        y = math.log(x)
-        y = normalize(y, max, min)
-    elif law == 'ln-1':
-        y = math.log(x) ** (-1)
-        y = normalize(y, max, min)
+        max = int(parameter.max)
+        min = int(parameter.min)
+        center = (max - min) / 2
 
-    elif law == 'ln-1*sin':
-        y = math.sin(x) * (math.log(x) ** (-1))
-        y = normalize(y, max, min)
-    elif law == 'ln*sin':
-        y = math.sin(x) * math.log(x)
-        y = normalize(y, max, min)
-    elif law == 'linear-1*sin':
-        y = math.sin(x) * (x ** (-1))
-        y = normalize(y, max, min)
-    elif law == 'linear*sin':
-        y = math.sin(x) * x
-        y = normalize(y, max, min)
+        if law == 'sin':
+            y = math.sin(x) * center + center
+        elif law == 'linear':
+            y = min + (x * 0.1) if min + (x * 0.1) <= max else max
+        elif law == 'saw':
+            y = ((x / 6) - int(x / 6)) * center + center
+        elif law == 'ln':
+            y = math.log(x)
+            y = normalize(y, max, min)
+        elif law == 'ln-1':
+            y = math.log(x) ** (-1)
+            y = normalize(y, max, min)
+
+        elif law == 'ln-1*sin':
+            y = math.sin(x) * (math.log(x) ** (-1))
+            y = normalize(y, max, min)
+        elif law == 'ln*sin':
+            y = math.sin(x) * math.log(x)
+            y = normalize(y, max, min)
+        elif law == 'linear-1*sin':
+            y = math.sin(x) * (x ** (-1))
+            y = normalize(y, max, min)
+        elif law == 'linear*sin':
+            y = math.sin(x) * x
+            y = normalize(y, max, min)
+
+        elif law == 'const':
+            y = center
+
+        else:
+            y = min + x if min + x <= max else max
+
+        if parameter.noise:
+            y = make_noise(y, parameter)
+
+        return {
+            'id': parameter.id,
+            'x': x,
+            'y': y
+        }
 
     else:
-        y = min + x if min + x <= max else max
-
-    if parameter.noise:
-        y = make_noise(y, parameter)
-
-    return {
-        'id': parameter.id,
-        'x': x,
-        'y': y
-    }
+        return False
 
 
 def read_db():
@@ -121,13 +130,14 @@ def send_parameters():
     for parameter in parameters:
         for client in clients.values():
             if parameter.id in client['ids']:
-                server.send_message(client, json.dumps(get_point(parameter)))
+                point = get_point(parameter)
+                if point:
+                    server.send_message(client, json.dumps(point))
 
 
 
 time_stamp_zero = time.time()
 
-# MOCK
 parameters = read_db()
 
 clients = {}

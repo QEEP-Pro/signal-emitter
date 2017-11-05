@@ -1,4 +1,5 @@
 import * as React from 'react'
+const _ = require('lodash')
 
 const randomColor = require('randomcolor')
 const Color = require('color')
@@ -9,6 +10,8 @@ import Point from '../model/Point'
 
 import { addSpacesToNumber } from '../utils'
 
+
+const MAX_POINTS = 25
 
 interface Props {
     points: Point[]
@@ -23,7 +26,11 @@ export default class Chart extends React.Component<Props, {}> {
     render() {
         const { points, unit, name } = this.props
 
-        const sortedPoints = points.sort((a: Point, b: Point) => a.x - b.x)
+        let sortedPoints = points.sort((a: Point, b: Point) => a.x - b.x)
+        if (sortedPoints.length > MAX_POINTS) {
+            sortedPoints = _.slice(sortedPoints, sortedPoints.length - MAX_POINTS)
+        }
+        
 
         return (
             <Line
@@ -54,6 +61,12 @@ export default class Chart extends React.Component<Props, {}> {
                             ticks: {
                                 callback: (value: any, _1: any, _2: any[]) =>
                                      `${addSpacesToNumber(value)}${unit ? ` ${unit}` : false} `,
+                            },
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                callback: (value: any, _1: any, _2: any[]) =>
+                                     `${addSpacesToNumber(value)}`,
                             },
                         }],
                     },
