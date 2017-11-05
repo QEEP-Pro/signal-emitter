@@ -45,14 +45,28 @@ def message_received(client, _, message):
 def get_point(parameter):
     x = time.time() - time_stamp_zero
 
-    if parameter.law == 'sin':
+    law = parameter.law['name']
+
+    if law == 'sin':
         y = math.sin(x)
-    elif parameter.law == 'linear':
+    elif law == 'linear':
         y = x * 0.2 + 2
-    elif parameter.law == 'saw':
+    elif law == 'saw':
         y = (x / 11) - int(x / 11)
-    elif parameter.law == 'ln':
+    elif law == 'ln':
         y = math.log(x)
+    elif law == 'ln-1':
+        y = math.log(x) ** (-1)
+
+    elif law == 'ln-1*sin':
+        y = math.sin(x) * (math.log(x) ** (-1))
+    elif law == 'ln*sin':
+        y = math.sin(x) * math.log(x)
+    elif law == 'linear-1*sin':
+        y = math.sin(x) * (x ** (-1))
+    elif law == 'linear*sin':
+        y = math.sin(x) * x
+
     else:
         y = x
 
