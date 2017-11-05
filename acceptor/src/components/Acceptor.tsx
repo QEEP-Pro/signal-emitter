@@ -7,6 +7,8 @@ import ParametersView from './ParametersView'
 
 import Parameter from '../model/Parameter'
 
+import fetchParameters from '../api/request'
+
 
 interface LocalState {
     parameters: Parameter[]
@@ -21,12 +23,7 @@ export default class Acceptor extends React.Component<{}, LocalState> {
     } as LocalState
 
     componentWillMount() {
-        this.setState({
-            parameters: [
-                new Parameter({id: 1, name: 'Test One'}),
-                new Parameter({id: 2, name: 'Two Test'})
-            ]
-        })
+        fetchParameters().then(parameters => this.setState({parameters}))
     }
 
     render() {

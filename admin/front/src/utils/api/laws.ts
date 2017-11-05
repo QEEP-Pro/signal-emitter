@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { HOST, PORT } from './settings'
+import { HOST, PORT } from '../../../../../conf/admin_api'
 
 import Law from '../../models/Law'
 
