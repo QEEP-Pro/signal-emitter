@@ -7,3 +7,4 @@ INSERT INTO `laws` (`name`, `title`) VALUES ('ln-1*sin', 'Синусоидаль
 INSERT INTO `laws` (`name`, `title`) VALUES ('ln*sin', 'Синусоидальный, логарифмически возрастающий');
 INSERT INTO `laws` (`name`, `title`) VALUES ('linear-1*sin', 'Синусоидальный, линейно убывающий');
 INSERT INTO `laws` (`name`, `title`) VALUES ('linear*sin', 'Синусоидальный, линейно возрастающий');
+INSERT INTO `laws` (`name`, `title`) VALUES ('const', 'Постоянный');

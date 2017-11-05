@@ -89,6 +89,9 @@ def get_point(parameter):
             y = math.sin(x) * x
             y = normalize(y, max, min)
 
+        elif law == 'const':
+            y = center
+
         else:
             y = min + x if min + x <= max else max
 
