@@ -91,7 +91,7 @@ def get_point(parameter):
             y = normalize(y, max, min)
 
         elif law == 'const':
-            y = center
+            y = min + center
 
         else:
             y = min + x if min + x <= max else max
