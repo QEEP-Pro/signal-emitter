@@ -7,9 +7,13 @@ import { Line } from 'react-chartjs-2'
 
 import Point from '../model/Point'
 
+import { addSpacesToNumber } from '../utils'
+
 
 interface Props {
     points: Point[]
+    unit?: string
+    name?: string
 }
 
 export default class Chart extends React.Component<Props, {}> {
@@ -17,7 +21,7 @@ export default class Chart extends React.Component<Props, {}> {
     color =  Color(randomColor())
 
     render() {
-        const { points } = this.props
+        const { points, unit, name } = this.props
 
         const sortedPoints = points.sort((a: Point, b: Point) => a.x - b.x)
 
@@ -45,8 +49,24 @@ export default class Chart extends React.Component<Props, {}> {
                             bottom: 20,
                         },
                     },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                callback: (value: any, _1: any, _2: any[]) =>
+                                     `${addSpacesToNumber(value)}${unit ? ` ${unit}` : false} `,
+                            },
+                        }],
+                    },
+                    tooltips: {
+                        mode: 'point',
+                        callbacks: {
+                            label: (item: any, data: any) =>
+                                `${name}: ${addSpacesToNumber(item.yLabel)}${unit ? ` ${unit}` : false}`,
+                            
+                        },
+                    },
                     legend: {
-                        position: 'bottom',
+                        display: false,
                     }
                 }}
             />
