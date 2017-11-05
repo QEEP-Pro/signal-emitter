@@ -2,8 +2,6 @@ import * as React from 'react'
 
 import { css } from 'emotion'
 
-import RaisedButton from 'material-ui/RaisedButton'
-
 import ParametersList from './ParametersList'
 import ParametersView from './ParametersView'
 
@@ -45,8 +43,7 @@ export default class Acceptor extends React.Component<{}, LocalState> {
                         />
                     </div>
                     <div className={s.main}>
-                        <RaisedButton fullWidth label={'Подписаться'} />
-                        <ParametersView ids={activeIds} />
+                        <ParametersView ids={activeIds} getParameterCallback={this.getParameterById} />
                     </div>
                 </div>
             </div>
@@ -67,6 +64,11 @@ export default class Acceptor extends React.Component<{}, LocalState> {
         this.setState({
             activeIds: newIds
         })
+    }
+
+    getParameterById = (id: number) => {
+        const parameter = this.state.parameters.find((p: Parameter) => p.id === id)
+        return parameter ? parameter : new Parameter({})
     }
 }
 

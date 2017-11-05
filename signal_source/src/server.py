@@ -26,8 +26,8 @@ parameters = [
 def get_point(parameter):
     return {
         'id': parameter.id,
-        'x': random.randint(-5,4),
-        'y': random.randint(-20, 1),
+        'x': random.randint(-10, 10),
+        'y': random.randint(-20, 1000),
     }
 
 clients = {}
@@ -36,7 +36,7 @@ clients = {}
 def new_client(client, server):
     if client['id'] not in clients.keys():
         clients[client['id']] = client
-    server.send_message_to_all("New client – id: {}".format(str(client['id'])))
+        clients[client['id']]['ids'] = []
 
 
 def message_received(client, server, message):
@@ -58,7 +58,7 @@ def send_parameters():
                 server.send_message(client, json.dumps(get_point(parameter)))
 
 
-do_periodically(10, send_parameters, 100000)
+do_periodically(1, send_parameters, 100000)
 
 server.set_fn_new_client(new_client)
 server.set_fn_message_received(message_received)
