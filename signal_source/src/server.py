@@ -10,7 +10,7 @@ from websocket_server import WebsocketServer
 from models import Parameter
 
 
-def noiseit(num, parameter):
+def make_noise(num, parameter):
     noise_delta=math.sqrt(parameter.dispersion)/parameter.mean
     return random.uniform(num*(1-noise_delta), num*(1+noise_delta))
 
@@ -87,6 +87,9 @@ def get_point(parameter):
 
     else:
         y = min + x if min + x <= max else max
+
+    if parameter.noise:
+        y = make_noise(y, parameter)
 
     return {
         'id': parameter.id,
