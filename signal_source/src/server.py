@@ -11,7 +11,7 @@ from models import Parameter
 
 
 def make_noise(num, parameter):
-    noise_delta=math.sqrt(parameter.dispersion)/float(parameter.mean)
+    noise_delta = (math.sqrt(parameter.dispersion) / float(parameter.mean)) / 100
     return random.uniform(num*(1-noise_delta), num*(1+noise_delta))
 
 
