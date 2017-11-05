@@ -17,7 +17,7 @@ export const createParameter = (parameter: Parameter) =>
 
 export const deleteParameter = (parameter: Parameter) =>
     axios
-        .get(`http://${HOST}:${PORT}/parameters?id=${parameter.id}`)
+        .delete(`http://${HOST}:${PORT}/parameters?id=${parameter.id}`)
         .then(data => true)
 
 export const refreshParameters = () => {
