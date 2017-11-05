@@ -6,6 +6,8 @@ import { Card, CardTitle } from 'material-ui/Card'
 
 import Chart from './Chart'
 
+import { WS_HOST, WS_PORT } from '../api/settings'
+
 import Parameter from '../model/Parameter'
 import Point from '../model/Point'
 
@@ -41,7 +43,7 @@ export default class ParametersView extends React.Component<Props, LocalState> {
         const { points } = this.state
 
         if (!socket) {
-            socket = new WebSocket('ws://localhost:13254')
+            socket = new WebSocket(`ws://${WS_HOST}:${WS_PORT}`)
 
             socket.onopen = () => {
                 console.log('Socket Open')
