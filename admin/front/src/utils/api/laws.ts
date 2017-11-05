@@ -1,12 +1,9 @@
 import axios from 'axios'
 
-// import { HOST, PORT } from './settings'
+import { HOST, PORT } from './settings'
 
 import Law from '../../models/Law'
 
-const HOST = 'localhost'
-
-const PORT = '3002'
 
 export const getLaws = () =>
     axios
