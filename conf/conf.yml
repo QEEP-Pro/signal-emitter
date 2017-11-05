@@ -6,3 +6,7 @@ db:
 ws:
     host: 'localhost'
     port: 13254
+admin:
+    host: 'localhost'
+    port: '3002'
+    emulatorPath: 'http://localhost/'
