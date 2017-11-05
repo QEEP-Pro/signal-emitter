@@ -60,6 +60,8 @@ export default class ParametersView extends React.Component<Props, LocalState> {
 
             points.push(point)
 
+            console.log(point)
+
             this.setState({points})
         }
 
