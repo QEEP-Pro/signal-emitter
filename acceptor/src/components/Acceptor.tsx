@@ -7,7 +7,7 @@ import ParametersView from './ParametersView'
 
 import Parameter from '../model/Parameter'
 
-import fetchParameters from '../api/request'
+import fetchParameters from '../api/fetchParameters'
 
 
 interface LocalState {
