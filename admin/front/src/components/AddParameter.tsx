@@ -137,7 +137,7 @@ export default class AddParameter extends React.Component<Props, LocalState> {
                         onChange={this.handleChangePeriod}
                         strategy={'warn'}
 
-                        floatingLabelText={'Период испускания (мс)'}
+                        floatingLabelText={'Период испускания (сек)'}
                     />
 
                 </CardText>
