@@ -40,6 +40,7 @@ export default class ParametersView extends React.Component<Props, LocalState> {
     componentWillReceiveProps(nextProps: Props) {
         let socket = this.socket
 
+        const { ids } = this.props
         const { points } = this.state
 
         if (!socket) {
@@ -55,7 +56,7 @@ export default class ParametersView extends React.Component<Props, LocalState> {
             }
     
             socket.onmessage = (message) => {
-                if (points.length > MAX_POINTS) {
+                if (points.length * ids.length > MAX_POINTS) {
                     points.shift()
                 }
                 const point = new Point(JSON.parse(message.data))
