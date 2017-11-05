@@ -4,7 +4,6 @@ import { css } from 'emotion'
 
 import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card'
 import TextField from 'material-ui/TextField'
-import NumberInput from 'material-ui-number-input'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import Checkbox from 'material-ui/Checkbox'
@@ -24,11 +23,11 @@ interface LocalState {
     law?: Law
     name?: string
     unit?: string
-    min: number
-    max: number
-    mean: number
-    dispersion: number
-    period: number
+    min: string
+    max: string
+    mean: string
+    dispersion: string
+    period: string
     noise: boolean
 }
 
@@ -38,11 +37,11 @@ export default class AddParameter extends React.Component<Props, LocalState> {
         law: undefined,
         name: undefined,
         unit: undefined,
-        min: 0,
-        max: 10,
-        mean: 5,
-        dispersion: 12,
-        period: 10,
+        min: '0',
+        max: '10',
+        mean: '5',
+        dispersion: '12',
+        period: '10',
         noise: true,
     } as LocalState
 
@@ -86,38 +85,34 @@ export default class AddParameter extends React.Component<Props, LocalState> {
                     </SelectField>
                     
                     <div className={s.row}>
-                        <NumberInput
+                        <TextField
                             fullWidth
                             value={min.toString()}
                             onChange={this.handleChangeMin}
-                            strategy={'warn'}
 
                             floatingLabelText={'Минимум'}                            
                         />
-                        <NumberInput
+                        <TextField
                             fullWidth
                             value={max.toString()}
                             onChange={this.handleChangeMax}
-                            strategy={'warn'}
 
                             floatingLabelText={'Максимум'}
                         />
                     </div>
 
                     <div className={s.row}>
-                        <NumberInput
+                        <TextField
                             fullWidth
                             value={mean.toString()}
                             onChange={this.handleChangeMean}
-                            strategy={'warn'}
 
                             floatingLabelText={'Математическое ожидание'}
                         />
-                        <NumberInput
+                        <TextField
                             fullWidth
                             value={dispersion.toString()}
                             onChange={this.handleChangeDispersion}
-                            strategy={'warn'}
 
                             floatingLabelText={'Дисперсия'}
                         />
@@ -131,11 +126,10 @@ export default class AddParameter extends React.Component<Props, LocalState> {
                         className={css`padding-top: 15px;`}
                     />
 
-                    <NumberInput
+                    <TextField
                         fullWidth
                         value={period.toString()}
                         onChange={this.handleChangePeriod}
-                        strategy={'warn'}
 
                         floatingLabelText={'Период испускания (сек)'}
                     />
@@ -154,19 +148,29 @@ export default class AddParameter extends React.Component<Props, LocalState> {
     handleChangeName = (_: any, name: string) => this.setState({name})
     handleChangeUnit = (_: any, unit: string) => this.setState({unit})
 
-    handleChangeMin = (_: any, min: string) => this.setState({min: parseFloat(min) || 0})
-    handleChangeMax = (_: any, max: string) => this.setState({max: parseFloat(max) || 0})
+    handleChangeMin = (_: any, min: string) => this.setState({min: min })
+    handleChangeMax = (_: any, max: string) => this.setState({max: max })
 
-    handleChangeMean = (_: any, mean: string) => this.setState({mean: parseFloat(mean) || 0})
-    handleChangeDispersion = (_: any, dispersion: string) => this.setState({dispersion: parseFloat(dispersion) || 0})
+    handleChangeMean = (_: any, mean: string) => this.setState({mean: mean })
+    handleChangeDispersion = (_: any, dispersion: string) => this.setState({dispersion: dispersion })
 
-    handleChangePeriod = (_: any, period: string) => this.setState({period: parseFloat(period) || 0})
+    handleChangePeriod = (_: any, period: string) => this.setState({period: period})
 
     handleChangeNoise = (_: any, noise: boolean) => this.setState({noise})
 
     handleClickCreate = (_1: any) => {
         if (this.validateData(this.state)) {
-            this.props.createParameterCallback({...this.state} as Parameter)
+            this.props.createParameterCallback({
+                name: this.state.name,
+                law: this.state.law,
+                unit: this.state.unit,
+                min: parseFloat(this.state.min),
+                max: parseFloat(this.state.max),
+                mean: parseFloat(this.state.mean),
+                dispersion: parseFloat(this.state.dispersion),
+                period: parseFloat(this.state.period),
+                noise: this.state.noise
+            } as Parameter)
             
         } else {
             console.log('erro')
@@ -176,7 +180,7 @@ export default class AddParameter extends React.Component<Props, LocalState> {
 
     validateData = (data: LocalState) =>
         !!data.law && !!data.name && !!data.period
-            && (data.min < data.max) && (data.period > 0)
+            && (parseFloat(data.min)) < parseFloat(data.max) && (parseFloat(data.period) > 0)
 }
 
 const s = {
