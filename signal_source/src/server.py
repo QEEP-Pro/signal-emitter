@@ -4,6 +4,7 @@ import threading
 import random
 import time
 import math
+import pymysql.cursors
 
 from websocket_server import WebsocketServer
 from models import Parameter
@@ -45,9 +46,9 @@ def read_db():
         with conn_db.cursor() as cursor:
             cursor.execute("SELECT * FROM `parameters`")
             parameters = cursor.fetchall()
-	    cursor.execute("SELECT * FROM `laws`")
+            cursor.execute("SELECT * FROM `laws`")
             laws = cursor.fetchall()
-	for row in parameters:
+        for row in parameters:
             law_name = next(x for x in laws if x['id']==row['law_id'])
             parameters.append(Parameter(row['id'], row['name'], row['unit'], law_name, row['period'], row['noise']))
     finally:
@@ -82,7 +83,7 @@ def emit(parameters: list) -> None:
     for parameter in parameters:
         threading.Timer(parameter.period, send_message_wrapper(parameter.id, parameter.law)).start()
 
-time_stamp_zero: time = time.time()
+time_stamp_zero = time.time()
 
 # MOCK
 parameters = [
