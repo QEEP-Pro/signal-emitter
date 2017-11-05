@@ -55,7 +55,7 @@ def get_point(parameter):
 
         return v
 
-    t0 = datetime.now().strftime("%H:%M")
+    t0 = datetime.now().strftime("%H:%M:%S")
     x = time.time() - time_stamp_zero
 
     period = int(parameter.period)
