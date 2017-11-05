@@ -1,6 +1,6 @@
 export default class Point {
     parameterId: number
-    x: number
+    x: string
     y: number
 
     constructor(item: any) {

@@ -26,7 +26,7 @@ export default class Chart extends React.Component<Props, {}> {
     render() {
         const { points, unit, name } = this.props
 
-        let sortedPoints = points.sort((a: Point, b: Point) => a.x - b.x)
+        let sortedPoints = points
         if (sortedPoints.length > MAX_POINTS) {
             sortedPoints = _.slice(sortedPoints, sortedPoints.length - MAX_POINTS)
         }
@@ -60,7 +60,7 @@ export default class Chart extends React.Component<Props, {}> {
                         yAxes: [{
                             ticks: {
                                 callback: (value: any, _1: any, _2: any[]) =>
-                                     `${addSpacesToNumber(value)}${unit ? ` ${unit}` : false} `,
+                                     `${value.toFixed(2)}${unit ? ` ${unit}` : false} `,
                             },
                         }],
                         xAxes: [{
