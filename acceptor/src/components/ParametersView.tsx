@@ -10,8 +10,6 @@ import Parameter from '../model/Parameter'
 import Point from '../model/Point'
 
 
-const MAX_POINTS = 25
-
 interface Props {
     ids: number[]
 
@@ -56,9 +54,6 @@ export default class ParametersView extends React.Component<Props, LocalState> {
         }
 
         socket.onmessage = (message) => {
-            if (points.length > (MAX_POINTS * nextProps.ids.length)) {
-                points.shift()
-            }
             const point = new Point(JSON.parse(message.data))
 
             points.push(point)
