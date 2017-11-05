@@ -10,7 +10,7 @@ import Parameter from '../model/Parameter'
 import Point from '../model/Point'
 
 
-const MAX_POINTS = 100
+const MAX_POINTS = 25
 
 interface Props {
     ids: number[]
@@ -90,6 +90,8 @@ export default class ParametersView extends React.Component<Props, LocalState> {
                         <CardTitle title={getParameterCallback(id).name} />
                         <Chart
                             points={points.filter((p: Point) => p.parameterId === id)}
+                            unit={getParameterCallback(id).unit}
+                            name={getParameterCallback(id).name}
                         />
                     </Card>
                 )}
