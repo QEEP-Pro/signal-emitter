@@ -9,6 +9,11 @@ import pymysql.cursors
 from websocket_server import WebsocketServer
 from models import Parameter
 
+noise_delta=0.1
+
+def noiseit(num):
+    return random.uniform(num*(1-noise_delta), num*(1+noise_delta))
+
 def do_periodically(interval, worker_func, iterations = 0):
     if iterations != 1:
         threading.Timer(
@@ -56,7 +61,7 @@ def read_db():
             laws = cursor.fetchall()
         for row in parameters:
             law_name = next(x for x in laws if x['id']==row['law_id'])
-            parameters.append(Parameter(row['id'], row['name'], row['unit'], law_name, row['period'], row['noise']))
+            parameters.append(Parameter(row['id'], row['name'], row['unit'], law_name, row['period'], row['noise'],row['mean'],row['dispersion']))
     finally:
         conn_db.close()
 
