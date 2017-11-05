@@ -7,8 +7,10 @@ from websocket_server import WebsocketServer
 from models import Parameter
 
 
-def emit(parameter: Parameter, send_message: callable):
-    # Вызывает send_message  (id, x,  y), где id - ид из параметра каждые parameter.period секугд
+def emit(parameters: list, send_message: callable):
+    # каждые parameters.period сукнду
+    # x, y как на доске решили для каждого параметра
+    # вызывает send message
     pass
 
 
@@ -68,14 +70,13 @@ def send_parameters():
 
 
 def send_message(id: int, x: float, y: float):
-    for parameter in parameters:
-        for client in clients.values():
-            if parameter.id in client['ids']:
-                server.send_message(client, json.dumps({
-                    "id": id,
-                    "x": x,
-                    "y": y,
-                }))
+    for client in clients.values():
+        if parameter.id in client['ids']:
+            server.send_message(client, json.dumps({
+                "id": id,
+                "x": x,
+                "y": y,
+            }))
 
 
 do_periodically(1, send_parameters, 100000)
