@@ -21,7 +21,7 @@ export default ({ parameter, deleteParameterCallback }: Props) => (
         <div className={s.row}>
             <List style={{width: '50%'}}>
                 <ListItem primaryText={getRangeWithUnit(parameter)} secondaryText={'Диапозон значений'} />
-                <ListItem primaryText={parameter.law.title} secondaryText={'Закон рапределения'} />
+                <ListItem primaryText={parameter.law.title} secondaryText={'Форма сигнала'} />
             </List>
             <List style={{width: '50%'}}>
                 <ListItem primaryText={parameter.mean} secondaryText={'Математическое ожидание'} />

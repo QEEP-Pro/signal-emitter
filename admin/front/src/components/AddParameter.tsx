@@ -72,6 +72,18 @@ export default class AddParameter extends React.Component<Props, LocalState> {
 
                         floatingLabelText={'Единица измерения'}
                     />
+
+                    <SelectField
+                        fullWidth
+                        value={law}
+                        onChange={this.handleChangeLaw}
+
+                        floatingLabelText={'Форма сигнала'}
+                    >
+                        {laws.map((l: Law) =>
+                            <MenuItem key={l.id} value={l} primaryText={l.title} />
+                        )}
+                    </SelectField>
                     
                     <div className={s.row}>
                         <NumberInput
@@ -110,18 +122,6 @@ export default class AddParameter extends React.Component<Props, LocalState> {
                             floatingLabelText={'Дисперсия'}
                         />
                     </div>
-    
-                    <SelectField
-                        fullWidth
-                        value={law}
-                        onChange={this.handleChangeLaw}
-
-                        floatingLabelText={'Закон распределения'}
-                    >
-                        {laws.map((l: Law) =>
-                            <MenuItem key={l.id} value={l} primaryText={l.title} />
-                        )}
-                    </SelectField>
 
                     <Checkbox
                         label={'Добавить шумы'}
