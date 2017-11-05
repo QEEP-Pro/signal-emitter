@@ -40,7 +40,6 @@ export default class ParametersView extends React.Component<Props, LocalState> {
     componentWillReceiveProps(nextProps: Props) {
         let socket = this.socket
 
-        const { ids } = this.props
         const { points } = this.state
 
         if (!socket) {
@@ -54,17 +53,17 @@ export default class ParametersView extends React.Component<Props, LocalState> {
                 console.log('Socket Close')
                 this.setState({active: false})
             }
-    
-            socket.onmessage = (message) => {
-                if (points.length * ids.length > MAX_POINTS) {
-                    points.shift()
-                }
-                const point = new Point(JSON.parse(message.data))
+        }
 
-                points.push(point)
-
-                this.setState({points})
+        socket.onmessage = (message) => {
+            if (points.length > (MAX_POINTS * nextProps.ids.length)) {
+                points.shift()
             }
+            const point = new Point(JSON.parse(message.data))
+
+            points.push(point)
+
+            this.setState({points})
         }
 
         if (socket.readyState) {
@@ -82,7 +81,7 @@ export default class ParametersView extends React.Component<Props, LocalState> {
             <div>
                 <Card>
                     <CardTitle
-                        title={active ? 'Содинение активно' : 'Соединение закрыто'}
+                        title={active ? 'Соединение активно' : 'Соединение закрыто'}
                         subtitle={active ? false : 'Попробуйте перезагрузить страницу'}
                     />
                 </Card>
