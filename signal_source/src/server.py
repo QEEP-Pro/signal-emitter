@@ -3,6 +3,7 @@ import json
 import threading
 import random
 import time
+from datetime import datetime
 import math
 import pymysql.cursors
 import yaml
@@ -53,8 +54,8 @@ def get_point(parameter):
 
         return v
 
-    t0 = time.time()
-    x = t0 - time_stamp_zero
+    t0 = datetime.now().strftime("%H:%M")
+    x = time.time() - time_stamp_zero
 
     period = int(parameter.period)
 
