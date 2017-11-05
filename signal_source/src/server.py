@@ -37,8 +37,9 @@ def left_client(client, _):
 
 
 def message_received(client, _, message):
+    global parameters
     if message == 'refresh':
-        pass
+         parameters = read_db()
     else:
         clients[client['id']]['ids'] = json.loads(message)
 
