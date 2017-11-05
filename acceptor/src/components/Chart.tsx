@@ -56,6 +56,12 @@ export default class Chart extends React.Component<Props, {}> {
                                      `${addSpacesToNumber(value)}${unit ? ` ${unit}` : false} `,
                             },
                         }],
+                        xAxes: [{
+                            ticks: {
+                                callback: (value: any, _1: any, _2: any[]) =>
+                                     `${addSpacesToNumber(value)}`,
+                            },
+                        }],
                     },
                     tooltips: {
                         mode: 'point',
