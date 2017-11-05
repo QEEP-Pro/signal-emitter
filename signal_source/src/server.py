@@ -9,6 +9,7 @@ import pymysql.cursors
 from websocket_server import WebsocketServer
 from models import Parameter
 
+
 def do_periodically(interval, worker_func, iterations = 0):
     if iterations != 1:
         threading.Timer(
@@ -46,19 +47,21 @@ def get_point(parameter):
 
 
 def read_db():
-    global parameters
+    parameters = []
     conn_db = pymysql.connect(host='localhost',user='admin',password='admin',db='digital-hack',charset='utf8',cursorclass=pymysql.cursors.DictCursor)
     try:
         with conn_db.cursor() as cursor:
             cursor.execute("SELECT * FROM `parameters`")
-            parameters = cursor.fetchall()
+            rows = cursor.fetchall()
             cursor.execute("SELECT * FROM `laws`")
             laws = cursor.fetchall()
-        for row in parameters:
+        for row in rows:
             law_name = next(x for x in laws if x['id']==row['law_id'])
             parameters.append(Parameter(row['id'], row['name'], row['unit'], law_name, row['period'], row['noise']))
     finally:
         conn_db.close()
+
+    return parameters
 
 
 def send_parameters():
@@ -68,15 +71,13 @@ def send_parameters():
                 server.send_message(client, json.dumps(get_point(parameter)))
 
 
+
 time_stamp_zero = time.time()
 
 # MOCK
-parameters = [
-    Parameter(1, 'Nest One', 'hu'),
-    Parameter(2, 'Parameter', 'p'),
-]
+parameters = read_db()
 
-read_db()
+# read_db()
 
 clients = {}
 
