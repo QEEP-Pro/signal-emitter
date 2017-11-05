@@ -19,13 +19,15 @@ export default class Chart extends React.Component<Props, {}> {
     render() {
         const { points } = this.props
 
+        const sortedPoints = points.sort((a: Point, b: Point) => a.x - b.x)
+
         return (
             <Line
                 data={{
-                    labels: points.map((ds: Point) => ds.x.toString()),
+                    labels: sortedPoints.map((ds: Point) => ds.x.toString()),
                     datasets: [
                         {
-                            data: points.map((ds: Point) => ({
+                            data: sortedPoints.map((ds: Point) => ({
                                 x: ds.x,
                                 y: ds.y
                             })),

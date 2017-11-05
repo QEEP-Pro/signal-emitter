@@ -84,6 +84,7 @@ export default class ParametersView extends React.Component<Props, LocalState> {
                 <Card>
                     <CardTitle
                         title={active ? 'Содинение активно' : 'Соединение закрыто'}
+                        subtitle={active ? false : 'Попробуйте перезагрузить страницу'}
                     />
                 </Card>
                 {ids.map((id: number) =>
