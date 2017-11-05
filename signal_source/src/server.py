@@ -38,12 +38,15 @@ def message_received(client, _, message):
 
 
 def get_point(parameter):
-    # caclulate tit
+    x = time.time() - time_stamp_zero
+    y = {'sin': lambda x: math.sin(x),
+         'linear': lambda x: x * 0.2 + 2,
+         'saw': lambda x: (x / 11) - int(x / 11),
+         'ln': lambda x: math.log(x)}[parameter.law](x)
     return {
         'id': parameter.id,
-        'x': random.randint(-5,4),
-        'y': random.randint(-20, 1),
-    }
+        'x': x,
+        'y': y}
 
 
 def read_db():
