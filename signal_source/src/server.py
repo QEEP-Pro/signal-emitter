@@ -33,13 +33,14 @@ def new_client(client, _):
 
 
 def left_client(client, _):
-    clients.pop(client['id'], None)
+    del clients[client['id']]
 
 
 def message_received(client, _, message):
     global parameters
     if message == 'refresh':
          parameters = read_db()
+         print(parameters)
     else:
         clients[client['id']]['ids'] = json.loads(message)
 
