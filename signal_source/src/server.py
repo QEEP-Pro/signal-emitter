@@ -44,14 +44,23 @@ def message_received(client, _, message):
 
 def get_point(parameter):
     x = time.time() - time_stamp_zero
-    y = {'sin': lambda x: math.sin(x),
-         'linear': lambda x: x * 0.2 + 2,
-         'saw': lambda x: (x / 11) - int(x / 11),
-         'ln': lambda x: math.log(x)}[parameter.law](x)
+
+    if parameter.law == 'sin':
+        y = math.sin(x)
+    elif parameter.law == 'linear':
+        y = x * 0.2 + 2
+    elif parameter.law == 'saw':
+        y = (x / 11) - int(x / 11)
+    elif parameter.law == 'ln':
+        y = math.log(x)
+    else:
+        y = x
+
     return {
         'id': parameter.id,
         'x': x,
-        'y': y}
+        'y': y
+    }
 
 
 def read_db():
