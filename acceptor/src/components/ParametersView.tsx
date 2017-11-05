@@ -5,18 +5,41 @@ interface Props {
     ids: number[]
 }
 
-export default class ParametersView extends React.Component<Props, {}> {
+interface LocalState {
+    active: boolean
+}
+
+export default class ParametersView extends React.Component<Props, LocalState> {
+
+    socket?: WebSocket = undefined
 
     componentWillMount() {
         this.componentWillReceiveProps(this.props)
     }
 
-    componentWillReceiveProps(nextPops: Props) {
-        const socket = new WebSocket('ws://localhost:3000/sockjs-node/916/wkxbeewj/websocket')
+    componentWillReceiveProps(nextProps: Props) {
+        let socket = this.socket
 
-        socket.onopen = () => {
-            console.log('ok')
+        if (!socket) {
+            socket = new WebSocket('ws://localhost:13254')
+
+            socket.onopen = () => {
+                console.log('Socket Open')
+            }
+            socket.onclose = () => {
+                console.log('Socket Close')
+            }
+    
+            socket.onmessage = (message) => {
+                console.log(message)
+            }
         }
+
+        if (socket.readyState) {
+            socket.send(JSON.stringify(nextProps.ids))
+        }
+
+        this.socket = socket
     }
 
     render() {
@@ -24,7 +47,6 @@ export default class ParametersView extends React.Component<Props, {}> {
 
         return(
             <div>
-                <p>...</p>
                 {ids.map((id: number) => <p key={id}>{id}</p>)}
             </div>
         )
