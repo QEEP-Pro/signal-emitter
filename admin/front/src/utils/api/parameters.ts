@@ -22,7 +22,6 @@ export const deleteParameter = (parameter: Parameter) =>
 
 export const refreshParameters = () => {
     const socket = new WebSocket(`ws://${WS_HOST}:${WS_PORT}`)
-    console.log(socket)
     socket.onopen = () => {
         socket.send('refresh')
     }
