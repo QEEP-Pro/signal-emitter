@@ -53,7 +53,8 @@ def get_point(parameter):
 
         return v
 
-    x = time.time() - time_stamp_zero
+    t0 = time.time()
+    x = t0 - time_stamp_zero
 
     period = int(parameter.period)
 
@@ -101,7 +102,7 @@ def get_point(parameter):
 
         return {
             'id': parameter.id,
-            'x': x,
+            'x': t0,
             'y': y
         }
 
