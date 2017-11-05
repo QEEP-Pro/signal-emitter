@@ -173,7 +173,7 @@ export default class AddParameter extends React.Component<Props, LocalState> {
             } as Parameter)
             
         } else {
-            console.log('erro')
+            console.log('error')
         }
         
     }
