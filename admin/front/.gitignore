@@ -1,4 +1,4 @@
-#src/utils/api/settings.ts
+src/utils/api/settings.ts
 
 # dependencies
 /node_modules
